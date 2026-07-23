@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="presentation_260720_files/libs/clipboard/clipboard.min.js"></script>
+<script src="presentation_260720_files/libs/quarto-html/tabby.min.js"></script>
+<script src="presentation_260720_files/libs/quarto-html/popper.min.js"></script>
+<script src="presentation_260720_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="presentation_260720_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="presentation_260720_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="presentation_260720_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="presentation_260720_files/libs/quarto-contrib/timeline-0.1.0/timeline.js"></script>
+<link href="presentation_260720_files/libs/quarto-contrib/timeline-0.1.0/timeline.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
+
+  <meta name="author" content="Venüs Kocabas, Nika Curcija, Haiyi Liu">
+  <meta name="dcterms.date" content="2026-07-24">
+  <title>A Survey on NL2VIS Benchmarks</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="presentation_260720_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="presentation_260720_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="presentation_260720_files/libs/revealjs/dist/theme/quarto-f563837468303362081e247dddd440d0.css">
+  <link rel="stylesheet" href="custom.css">
+  <link href="presentation_260720_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="presentation_260720_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="presentation_260720_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="presentation_260720_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link href="presentation_260720_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+  <link href="presentation_260720_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/datatables-binding-0.34.0/datatables.js"></script>
+
+  <script src="presentation_260720_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+  <link href="presentation_260720_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+  <link href="presentation_260720_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <link href="presentation_260720_files/libs/dt-ext-fixedheader-1.13.6/css/fixedHeader.dataTables.min.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/dt-ext-fixedheader-1.13.6/js/dataTables.fixedHeader.min.js"></script>
+
+  <link href="presentation_260720_files/libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+
+  <link href="presentation_260720_files/libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/selectize-0.12.0/selectize.min.js"></script>
+
+  <link href="presentation_260720_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+  <script src="presentation_260720_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">A Survey on NL2VIS Benchmarks</h1>
+  <p class="subtitle">Supervisors: Prof.&nbsp;Dr.&nbsp;Frauke Kreuter, Dr.&nbsp;Cynthia Huang</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Venüs Kocabas, Nika Curcija, Haiyi Liu 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-07-24</p>
+</section>
+<section id="content" class="slide level2" style="font-size: 80%">
+<h2>Content</h2>
+<ol type="1">
+<li>Introduction</li>
+<li>Contribution &amp; Methodology</li>
+<li>Principles of Statistical Graphics</li>
+<li>Definition of Benchmark Dimensions</li>
+<li>Benchmark Characterization Matrix</li>
+<li>Gap Analysis</li>
+<li>Direction for Future Benchmarks</li>
+<li>Limitations</li>
+<li>References</li>
+<li>Appendix</li>
+</ol>
+</section>
+<section id="introduction" class="slide level2" style="font-size: 80%">
+<h2>Introduction</h2>
+<div style="font-size: 90%;">
+<ul>
+<li><strong>Background &amp; Motivation</strong>:
+<ul>
+<li>Data visualization is essential for exploratory analysis and communicating results</li>
+<li>LLM enables NL2VIS but the generated charts can contain <strong>statistical errors</strong></li>
+</ul></li>
+<li><strong>Remaining Gap</strong>:
+<ul>
+<li>Current benchmark evaluation prioritizes programmatic execution over statistical validity</li>
+<li>A chart that renders successfully can still mislead, biasing downstream analysis and distorting interpretation</li>
+</ul></li>
+<li><strong>Research question</strong>:
+<ul>
+<li>What are the characteristics of current natural language to visualization (NL2VIS) benchmarks?</li>
+</ul></li>
+<li><strong>Collaboration scenario</strong>:
+<ul>
+<li>How can we assess trust in <strong><em>LLM-generated visualizations</em></strong> via <strong><em>statistically principled benchmarks</em></strong>?</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="contribution" class="slide level2" style="font-size: 75%">
+<h2>Contribution</h2>
+<ul>
+<li>A <strong>systematic literature survey</strong> connecting statistical graphics principles and NL2VIS benchmark evaluation criteria</li>
+<li>A documented taxonomy of <strong>evaluation blind spots</strong> in existing benchmarks</li>
+<li>A proposed direction for future benchmarks <strong>grounded in statistical validity</strong></li>
+</ul>
+</section>
+<section id="methodology-12" class="slide level2" style="font-size: 80%">
+<h2>Methodology (1/2)</h2>
+<ul>
+<li><strong>6 selected databases</strong> across <strong>2020-2026</strong></li>
+<li><strong>Search query for all databases</strong>:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href=""></a>("NL2VIS" OR "text-to-vis*" OR "text-to-chart" OR "natural language to vis*" OR "data vis*")</span>
+<span id="cb1-2"><a href=""></a>AND ("large language model*" OR "LLM*" OR "multimodal LLM*" OR "MLLM*")</span>
+<span id="cb1-3"><a href=""></a>AND ("benchmark*" OR "dataset*" OR "evaluation framework*" OR "evaluat*")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Eligibility Criteria</strong>:
+<ol type="1">
+<li>Scope: The paper must present a <strong>standalone benchmark</strong> designed for the <strong>NL2VIS task</strong>, OR introduce an LLM-based visualization system that evaluates its performance using a reproducible evaluation dataset (benchmark)</li>
+<li>Metric Requirement: The paper must explicitly report what <strong>metrics/criteria are used to grade</strong> the generated visualization code or final graphic</li>
+</ol></li>
+</ul>
+</section>
+<section id="methodology-22" class="slide level2" style="font-size: 80%">
+<h2>Methodology (2/2)</h2>
+<div style="display: flex; justify-content: center; align-items: center; height: 85%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="PRISMA.png" class="quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="principles-of-statistical-graphics" class="slide level2" style="font-size: 80%">
+<h2>Principles of Statistical Graphics</h2>
+<p><strong>Success of a data visualization depends on following certain graphical principles:</strong></p>
+<ul>
+<li>The Hierarchy of Graphical Perception</li>
+<li>Algebraic Design Principles</li>
+<li>Structural Integrity through the Grammar of Graphics</li>
+<li>Direct Representation of Uncertainty and Distributions</li>
+<li>Prioritising Comparison and Discovery over Aesthetics</li>
+</ul>
+</section>
+<section id="definition-of-benchmark-dimensions-12" class="slide level2" style="font-size: 80%">
+<h2>Definition of Benchmark Dimensions (1/2)</h2>
+<p><strong>Core dimensions:</strong></p>
+<ul>
+<li>Analytical Tasks (13)</li>
+<li>Chart Types (12)</li>
+<li>Evaluation Checkpoints</li>
+<li>Visualization Tradition</li>
+<li>Visual Intent in Natural Language Queries</li>
+<li>Ground Truth</li>
+</ul>
+</section>
+<section id="definition-of-benchmark-dimensions-22" class="slide level2" style="font-size: 80%">
+<h2>Definition of Benchmark Dimensions (2/2)</h2>
+<div style="font-size: 75%;">
+<p><strong>Analytical Tasks:</strong> An extended taxonomy, building upon the <em>Amar and Stasko low-level task taxonomy</em>, encompassing the analytical operations performed in the process of constructing a visualization:</p>
+<ul>
+<li>Characterize Distribution, Cluster, Compute Derived Value, Correlate, Determine Range, Filter, Find Anomalies, Find Extremum, Retrieve Value, Sort, <em>+ Analyse Trend</em>, <em>+ Compare</em>, <em>+ Forecast</em></li>
+</ul>
+<p><strong>Chart Types:</strong> The chart taxonomy of Borkin was taken as a base and extended to capture and consider all the benchmarks</p>
+<ul>
+<li>Area, Bar, Circle, Diagram, Distribution, Grid &amp; Matrix, Line, Map, Point, Table, Text, Trees &amp; Networks</li>
+</ul>
+<p><strong>Evaluation Checkpoints:</strong></p>
+<ul>
+<li>Data Selection Stage, Data Transformation Stage, Visualization Generation Stage, Reading Stage</li>
+</ul>
+<p><strong>Visual Intent in Natural Language Queries:</strong></p>
+<ul>
+<li>High Ambiguity, Medium Ambiguity, Low Ambiguity</li>
+</ul>
+<p><strong>Ground Truth:</strong> The reference point of evaluation</p>
+</div>
+</section>
+<section id="benchmark-characterization-matrix" class="slide level2" style="font-size: 80%">
+<h2>Benchmark Characterization Matrix</h2>
+<div class="cell">
+<div class="cell-output-display">
+<style>
+        /* 整个 DT 表格的默认字号 */
+        div.dataTables_wrapper {
+          font-size: 13px !important;
+        }
+
+        /* 表头 */
+        table.dataTable thead th {
+          font-size: 13px !important;
+          font-weight: 600 !important;
+          line-height: 1.1 !important;
+          padding: 4px 6px !important;
+        }
+
+        /* 正文单元格 */
+        table.dataTable tbody td {
+          font-size: 14px !important;
+          line-height: 1.2 !important;
+          padding: 5px 6px !important;
+          vertical-align: top !important;
+        }
+
+        /* 每列上方的筛选框 */
+        table.dataTable thead input {
+          font-size: 11px !important;
+          height: 18px !important;
+          padding: 1px 3px !important;
+        }
+
+        /* 右上角 Search */
+        div.dataTables_filter,
+        div.dataTables_filter input {
+          font-size: 11px !important;
+        }
+
+        div.dataTables_filter input {
+          height: 20px !important;
+        }
+
+        /* 底部 Showing 1 to ... */
+        div.dataTables_info {
+          font-size: 12px !important;
+        }
+      </style>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-7b726100432b75f6271f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-7b726100432b75f6271f">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","extensions":["FixedHeader"],"data":[["VisEval","nvBench","NLV Corpus","nvBench 2.0","AIDA","Text2Vis","MatplotAgent","DV-World","PMVisBench","DataSciBench","PlotCraft","MultiVis-Agent","PandasPlotBench","NL2SciVis"],["Characterize Distribution, Compute Derived Value, Correlate, Determine Range, Filter, Find Extreme, Retrieve Value, Sort","Characterize Distribution, Compute Derived Value, Correlate, Determine Range, Filter, Find Extreme, Retrieve Value, Sort","Characterize Distribution, Compute Derived Value, Correlate, Determine Range, Filter, Find Extreme, Retrieve Value, Sort","Characterize Distribution, Compute Derived Value, Compare, Correlate, Determine Range, Filter, Find Extreme, Retrieve Value, Sort","Analyse Trend, Characterize Distribution, Computed Derived Value, Compare, Correlate, Filter, Find Extreme, Retrieve Value, Sort","Analyse Trend, Characterize Distribution, Compute Derived Value, Compare, Correlate, Find Anomalies, Find Extreme, Forecast, Sort","Analyse Trend, Characterize Distribution, Cluster, Compute Derived Value, Compare, Correlate, No Task","Analyse Trend, Characterize Distribution, Compute Derived Value, Compare, Correlate, Filter, Find Anomalies, Sort","Characterize Distribution, Compute Derived Value, Correlate, Determine Range, Filter, Find Extreme, Retrieve Value, Sort","Analyse Trend, Characterize Distribution, Cluster, Compute Derived Values, Correlate, Find Anomalies, Find Extreme, Forecast","Analyse Trend, Characterize Distribution, Cluster, Composition, Correlate, Forecast, Sort","Analyse Trend, Filter","Analyse Trend, Compute Derived Values, Correlate","Compute Derived Value, Find Extreme"],["Bar, Circle, Line, Point","Bar, Circle, Line, Point","Bar, Distribution, Line, Point","Bar, Circle, Distribution, Grid &amp; Matrix, Line, Point","Bar, Circle, Distribution, Grid &amp; Matrix, Line, Point","Area, Bar, Circle, Diagram, Distribution, Grid &amp; Matrix, Map, Line, Point, Trees &amp; Networks","Area, Bar, Circle, Diagram, Distribution, Grid &amp; Matrix, Line, Map, Point, Trees &amp; Networks","Area, Bar, Circle, Distribution, Line, Matrix &amp; Grid, Point","Bar, Circle, Line, Point","Bar, Distribution, Grid &amp; Matrix, Line, Point","Area, Bar, Circle, Distribution, Grid &amp; Matrix, Line, Point, Trees &amp; Networks","Area, Bar, Circle, Diagram, Distribution, Grid &amp; Matrix, Line, Point","Area, Bar, Circle, Distribution, Grid &amp; Matrix, Line, Point","N/A (rather 3D visualizations?)"],["Medium ambiguity","Low, medium and high ambiguity","Low, medium and high ambiguity","Low, medium and high ambiguity","Low, medium ambiguity","Low, medium and high ambiguity","Low ambiguity","Low, medium and high ambiguity","Medium, high ambiguity","Low, medium ambiguity","Low ambiguity","High ambiguity","Low, medium ambiguity","Low ambiguity / highly specialised"],["Visualization generation stage, reading stage","Reading stage","Visualization generation stage","Reading stage","Visualization generation stage, reading stage","Visualization generation stage, reading stage","Visualization generation stage, reading stage","Visualization generation stage, data selection stage, data transformation stage, reading stage","Data selection stage, data transformation stage, reading stage","Visualization generation stage, reading stage","Visualization generation stage, reading stage","Visualization generation stage","Visualization generation stage, reading stage","Visualization generation stage"],["Statistical graphics","Statistical graphics","Statistical graphics","Statistical graphics","Statistical graphics","Statistical graphics","Scientific visualization","Information visualization","Statistical graphics","Statistical graphics","Statistical graphics (per appendix)","Statistical graphics","Statistical graphics","Scientific visualization"],["Chart type, plotted data, and meta-information (specified channels, sorting requirements, and whether the bar chart is stacked)","VIS queries stored as ASTs specifying chart type, selected attributes, grouping/binning, aggregation function, filter conditions, and ordering","Pre-existing charts","Data table, ambiguous query, a set of valid visualizations derived from the query, and step-wise reasoning paths showing how the ambiguity was resolved for each visualization-query pair","Tasks independently labeled and cross-reviewed by at least two additional experts","Short textual answer and visualization code","Visualization","Visualization","Visualization Query Language (VQL)","Visualization","Human-generated Python code snippets that compile into the desired charts","Scenario-dependent ground truth, generally annotated by human experts","Ground-truth plot and code","Human-generated Python code"]],"container":"<table class=\"stripe hover compact\">\n  <thead>\n    <tr>\n      <th>Benchmark<\/th>\n      <th>Analytical Tasks<\/th>\n      <th>Chart Types<\/th>\n      <th>Visual Intent in the NL Queries<\/th>\n      <th>Evaluation Checkpoints<\/th>\n      <th>Visualization Tradition<\/th>\n      <th>Ground Truth<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"frtip","scrollY":"420px","scrollCollapse":true,"paging":false,"fixedHeader":true,"autoWidth":false,"columnDefs":[{"width":"100px","targets":0},{"width":"190px","targets":[1,3,4,6]},{"width":"150px","targets":[2,5]},{"name":"Benchmark","targets":0},{"name":"Analytical Tasks","targets":1},{"name":"Chart Types","targets":2},{"name":"Visual Intent in the NL Queries","targets":3},{"name":"Evaluation Checkpoints","targets":4},{"name":"Visualization Tradition","targets":5},{"name":"Ground Truth","targets":6}],"order":[],"orderClasses":false,"orderCellsTop":true,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'white-space':'normal','vertical-align':'top'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'white-space':'normal','vertical-align':'top'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'white-space':'normal','vertical-align':'top'});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'white-space':'normal','vertical-align':'top'});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'white-space':'normal','vertical-align':'top'});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'white-space':'normal','vertical-align':'top'});\nvar value=data[6]; $(this.api().cell(row, 6).node()).css({'white-space':'normal','vertical-align':'top'});\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="gap-analysis-insights-from-the-matrix-12" class="slide level2" style="font-size: 80%">
+<h2>Gap Analysis: Insights from the Matrix (1/2)</h2>
+<ul>
+<li>Inclusion of more complex statistical tasks
+<ul>
+<li><em>Low level task taxonomy is insufficient</em></li>
+</ul></li>
+<li>Match between ambiguity levels and evaluation depth
+<ul>
+<li><em>Lower ambiguity queries result in more precise visualizations</em></li>
+</ul></li>
+<li>Consideration of perceptual encoding hierarchy
+<ul>
+<li><em>Position &gt; Length &gt; Angle &gt; Color</em></li>
+<li><em>e.g.&nbsp;Implication of Bar Chart Principle</em></li>
+</ul></li>
+<li>Type-conditioned evaluation for different visual traditions
+<ul>
+<li><em>Different visual traditions = Different visualization intents + rules</em></li>
+</ul></li>
+</ul>
+</section>
+<section id="gap-analysis-additional-insights-22" class="slide level2" style="font-size: 80%">
+<h2>Gap Analysis: Additional Insights (2/2)</h2>
+<div style="font-size:90%;">
+<ul>
+<li>Statistical validity of the ground truth</li>
+<li>Appropriateness checks for the visual encoding
+<ul>
+<li><em>Ensuring the harmony of the visual elements task-wise</em></li>
+</ul></li>
+<li>Data-Ink Ratio
+<ul>
+<li><em>Eliminating purposeless design elements to highlight main message</em></li>
+</ul></li>
+<li>Representation of uncertainty with fitting methods</li>
+<li>Consideration of visualization pitfalls and mirages in the evaluation framework
+<ul>
+<li><em>Verification of query-conformance, but none for data change conformance</em></li>
+</ul></li>
+<li>Usage of GoG conformant languages
+<ul>
+<li><em>e.g.&nbsp;ggplot2 is found to be conformant to GoG</em></li>
+</ul></li>
+<li>Accessibility Checks
+<ul>
+<li><em>Different properties of colors to account for (e.g.&nbsp;Hue &amp; luminance)</em></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="direction-for-future-benchmarks" class="slide level2" style="font-size: 80%">
+<h2>Direction for Future Benchmarks</h2>
+<div style="display: grid; grid-template-columns: 0.5fr 1fr 1fr 1fr; gap: 10px; height: 100%; overflow-y: auto; font-size: 75%;">
+<div>
+<p><strong>Dataset</strong></p>
+<ul>
+<li>All ambiguity levels</li>
+<li>More complex analytical tasks</li>
+</ul>
+</div>
+<div>
+<p><strong>Legality Checks</strong></p>
+<p>Query-chart compliance</p>
+<ul>
+<li>Chart type, data, order, + task type</li>
+<li>Predictive nature requires uncertainty representation</li>
+<li>Check if underlying distribution warrants aggregation</li>
+<li>Check appropriateness of chart type via measurement scale of variables</li>
+</ul>
+</div>
+<div>
+<p><strong>Validity Checks</strong></p>
+<p>Successful execution of code in a sandboxed environment</p>
+<ul>
+<li>Checks for syntactical correctness</li>
+<li>Correct referencing and availability of data sources, required libraries, APIs, and variables</li>
+<li>Check of rendering output</li>
+<li>Consistency among repeated executions under the same environment conditions</li>
+</ul>
+</div>
+<div>
+<p><strong>Readability Checks</strong></p>
+<p>Clear presentation of information</p>
+<ul>
+<li>Layout check for placement of elements</li>
+<li>Appropriateness check for scaling and reference points along correct units</li>
+<li>Respecting Data-Ink Ratio &amp; No Chartjunk</li>
+<li>Ensuring title informativeness through low ambiguity recommendations</li>
+<li>Accessibility checks (font, colors etc.)</li>
+<li>Perceptual encoding hierarchy</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="limitations" class="slide level2" style="font-size: 80%">
+<h2>Limitations</h2>
+<ul>
+<li>Only targeted search for literature on statistical graphics</li>
+<li>Despite systematic search for NL2VIS literature, some benchmarks might not have been found</li>
+<li>Manual classification of queries into a uniform analytical task taxonomy made benchmarks comparable, but required subjective judgement</li>
+</ul>
+</section>
+<section id="references-for-statistical-graphics" class="slide level2" style="font-size: 80%">
+<h2>References for Statistical Graphics</h2>
+<div style="font-size: 60%">
+<ul>
+<li>Bresciani, S., &amp; Eppler, M. J. (2015). The pitfalls of visual representations. SAGE Open, 5(4). https://doi.org/10.1177/2158244015611451</li>
+<li>Cleveland, W. S., &amp; McGill, R. (1984). Graphical perception: Theory, experimentation, and application to the development of graphical methods. Journal of the American Statistical Association, 79(387), 531–554. https://doi.org/10.2307/2288400</li>
+<li>Gelman, A., &amp; Unwin, A. (2013). Infovis and statistical graphics: Different goals, different looks. Journal of Computational and Graphical Statistics, 22(1), 2–28. https://doi.org/10.1080/10618600.2012.761137</li>
+<li>Heer, J., &amp; Bostock, M. (2010). Crowdsourcing graphical perception: Using Mechanical Turk to assess visualization design. Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI ’10), 203–212. https://doi.org/10.1145/1753326.1753357</li>
+<li>Hullman, J., &amp; Gelman, A. (2021). Designing for interactive exploratory data analysis requires theories of graphical inference. Harvard Data Science Review. https://doi.org/10.1162/99608f92.3ab8a587</li>
+<li>Kay, M. (2023). ggdist: Visualizations of Distributions and Uncertainty in Grammar of Graphics. IEEE Transactions on Visualization and Computer Graphics, 30(1), 1–11. https://doi.org/10.1109/tvcg.2023.3327195</li>
+<li>Kindlmann, G., &amp; Scheidegger, C. (2014). An algebraic process for visualization design. IEEE Transactions on Visualization and Computer Graphics, 20(12), 2181–2190. https://doi.org/10.1109/TVCG.2014.2346325</li>
+<li>McNutt, A., Kindlmann, G., &amp; Correll, M. (2020). Surfacing visualization mirages. Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems (CHI ’20), 1–16. https://doi.org/10.1145/3313831.3376420</li>
+<li>Wickham, H. (2009). A layered grammar of graphics. Journal of Computational and Graphical Statistics, 19(1), 3–28. https://doi.org/10.1198/jcgs.2009.07098</li>
+<li>Wilkinson, L. (2010). The grammar of graphics. WIREs Computational Statistics, 2(6), 673–677. https://doi.org/10.1002/wics.118</li>
+</ul>
+</div>
+</section>
+<section id="references-for-benchmark-papers-12" class="slide level2" style="font-size: 80%">
+<h2>References for Benchmark Papers (1/2)</h2>
+<div style="font-size: 60%">
+<ul>
+<li>Chen, N., Zhang, Y., Xu, J., Ren, K., &amp; Yang, Y. (2024). VisEval: A benchmark for data visualization in the era of large language models. IEEE Transactions on Visualization and Computer Graphics, 31(1), 1301–1311. https://doi.org/10.1109/TVCG.2024.3456320</li>
+<li>Galimzyanov, T., Titov, S., Golubev, Y., &amp; Bogomolov, E. (2025). Drawing Pandas: A benchmark for LLMs in generating plotting code. Proceedings of the 2025 IEEE/ACM 22nd International Conference on Mining Software Repositories (MSR), 503–507. https://doi.org/10.1109/MSR66628.2025.00083</li>
+<li>Lu, J., Song, Y., Zhang, C., &amp; Wong, R. C.-W. (2026). MultiVis-Agent: A multi-agent framework with logic rules for reliable and comprehensive cross-modal data visualization. Proceedings of the ACM on Management of Data, 4(1), Article 56, 25 pages. https://doi.org/10.1145/3786670</li>
+<li>Luo, T., Huang, C., Shen, L., Li, B., Shen, S., Zeng, W., Tang, N., &amp; Luo, Y. (2025). nvBench 2.0: A benchmark for natural language to visualization under ambiguity (arXiv:2503.12880). arXiv. https://doi.org/10.48550/arXiv.2503.12880</li>
+<li>Luo, Y., Tang, N., Li, G., Chai, C., Li, W., &amp; Qin, X. (2021). Synthesizing natural language to visualization (NL2VIS) benchmarks from NL2SQL benchmarks. Proceedings of the 2021 International Conference on Management of Data (SIGMOD ’21), 1235–1247. https://doi.org/10.1145/3448016.3457261</li>
+<li>Mathai, M., Han, M., Knowles, J., Mateevitsi, V. A., Rizzi, S., &amp; Childs, H. (2026). NL2SciVis: A benchmark for natural language to scientific visualization. In J. Byska, A. Ottley, &amp; M. Waldner (Eds.), EuroVis 2026 – Short Papers. The Eurographics Association. https://doi.org/10.2312/evs.20261017</li>
+<li>Meng, J., Huang, S., Lei, F., Guo, J., Liu, H., Su, J., Wang, S., Wang, Y., Wang, E., Yang, Y., Chai, H., Lv, J., Yu, A., Zhang, H., Zhang, Y., Huang, Y., Ma, Z., He, S., Zhao, J., &amp; Liu, K. (2026). DV-World: Benchmarking data visualization agents in real-world scenarios (arXiv:2604.25914). arXiv. https://doi.org/10.48550/arXiv.2604.25914</li>
+</ul>
+</div>
+</section>
+<section id="references-for-benchmark-papers-22" class="slide level2" style="font-size: 80%">
+<h2>References for Benchmark Papers (2/2)</h2>
+<div style="font-size: 60%">
+<ul>
+<li>Rahman, M., Laskar, M. T. R., Joty, S., &amp; Hoque, E. (2025). Text2Vis: A challenging and diverse benchmark for generating multimodal visualizations from text (arXiv:2507.19969). arXiv. https://doi.org/10.48550/arXiv.2507.19969</li>
+<li>Srinivasan, A., Nyapathy, N., Lee, B., Drucker, S. M., &amp; Stasko, J. (2021). Collecting and characterizing natural language utterances for specifying data visualizations. Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems (CHI ’21), Article 464, 1–10. https://doi.org/10.1145/3411764.3445400</li>
+<li>Xu, W., Zhang, C. J., Wei, X., Li, H., Kim, H., Song, Y., &amp; Wong, R. C.-W. (2026). Towards reliable agentic progressive text-to-visualization with verification rules (arXiv:2605.29692). arXiv. https://doi.org/10.48550/arXiv.2605.29692</li>
+<li>Yang, Y., Lei, F., Sun, Y., Zeng, Y., Lv, C., Hong, J., Tian, J., Qiu, T., Wang, X., Chen, Y., Li, Y., Pan, Z., Zhou, X., Chen, G., Lv, H., Xu, Y., Ou, Y., Liu, H., He, S., … Sun, W. (2026). AIDABench: AI data analytics benchmark (arXiv:2603.15636). arXiv. https://doi.org/10.48550/arXiv.2603.15636</li>
+<li>Yang, Z., Zhou, Z., Wang, S., Cong, X., Han, X., Yan, Y., Liu, Z., Tan, Z., Liu, P., Yu, D., Liu, Z., Shi, X., &amp; Sun, M. (2024). MatPlotAgent: Method and evaluation for LLM-based agentic scientific data visualization (arXiv:2402.11453). arXiv. https://doi.org/10.48550/arXiv.2402.11453</li>
+<li>Zhang, D., Zhoubian, S., Cai, M., Li, F., Yang, L., Wang, W., Dong, T., Hu, Z., Tang, J., &amp; Yue, Y. (2025). DataSciBench: An LLM agent benchmark for data science (arXiv:2502.13897). arXiv. https://doi.org/10.48550/arXiv.2502.13897</li>
+<li>Zhang, J., Zhang, J., Cui, Z., Yang, J., Zhang, L., Hui, B., Liu, Q., Wang, Z., Wang, L., &amp; Lin, J. (2026). PlotCraft: Pushing the limits of LLMs for complex and interactive data visualization (arXiv:2511.00010). arXiv. https://doi.org/10.48550/arXiv.2511.00010</li>
+</ul>
+</div>
+</section>
+<section id="other-references-for-taxonomies-and-supplementary-material" class="slide level2" style="font-size: 80%">
+<h2>Other References for Taxonomies and Supplementary Material</h2>
+<ul>
+<li>Amar, R. A., Eagan, J. R., &amp; Stasko, J. T. (2005). Low-level components of analytic activity in information visualization. In Proceedings of the IEEE Symposium on Information Visualization (InfoVis 2005) (pp.&nbsp;111–117). IEEE. https://doi.org/10.1109/INFVIS.2005.1532136</li>
+<li>Borkin, M. A., Vo, A. A., Bylinskii, Z., Isola, P., Sunkavalli, S., Oliva, A., &amp; Pfister, H. (2013). What makes a visualization memorable? IEEE Transactions on Visualization and Computer Graphics, 19(12), 2306–2315. https://doi.org/10.1109/TVCG.2013.234</li>
+<li>Tory, M., &amp; Möller, T. (2004). Rethinking visualization: A high-level taxonomy. In Proceedings of the IEEE Symposium on Information Visualization (InfoVis 2004) (pp.&nbsp;151–158). IEEE. https://doi.org/10.1109/INFVIS.2004.59</li>
+</ul>
+</section>
+<section id="appendix" class="slide level2" style="font-size: 80%">
+<h2>Appendix</h2>
+<p><strong>Content:</strong></p>
+<ol type="I">
+<li>Analytical Tasks</li>
+<li>Chart Types</li>
+<li>Visual Intent in the Natural Language Queries</li>
+<li>Evaluation Checkpoints</li>
+<li>Visualization Tradition</li>
+</ol>
+</section>
+<section id="appendix-i-analytical-tasks" class="slide level2" style="font-size: 80%">
+<h2>Appendix I: Analytical Tasks</h2>
+<div style="font-size: 60%">
+<p><strong>Extended Amar and Stasko Low Level Analytical Task Taxonomy</strong></p>
+<p><strong>Characterize Distribution:</strong> Given a set of data observations and a quantitative attribute of interest, characterize the distribution of that attribute’s values over the set</p>
+<p><strong>Cluster:</strong> Given a set of data observations, find clusters of similar attribute values</p>
+<p><strong>Compute Derived Value:</strong> Given a set of data observations, compute an aggregate numeric representation of those data observations</p>
+<p><strong>Correlate:</strong> Given a set of data observations and two attributes, determine useful relationships between the values of those attributes</p>
+<p><strong>Determine Range:</strong> Given a set of data observations and an attribute of interest, find the span of values within the set</p>
+<p><strong>Filter:</strong> Given some concrete conditions on attribute values, find observations satisfying those conditions</p>
+<p><strong>Find Anomalies:</strong> Identify any anomalies within a given set of data observations with respect to a given relationship or expectation, e.g.&nbsp;statistical outliers</p>
+<p><strong>Find Extremum:</strong> Find observations possessing an extreme value of an attribute over its range within the data set</p>
+<p><strong>Retrieve Value:</strong> Given a set of specific observations in the dataset, find attributes of those observations</p>
+<p><strong>Sort:</strong> Given a set of data observations, rank them according to some ordinal metric</p>
+<p><strong>(+) Analyse Trend:</strong> Given a set of data observations ordered along a temporal attribute, characterize the patterns of changes, exhibited by these observations</p>
+<p><strong>(+) Compare:</strong> Given two or more sets of observations, determine how they differ with respect to an attribute or a derived value</p>
+<p><strong>(+) Forecast:</strong> Given historical observations of an attribute ordered over time, extrapolate or predict its values beyond the range of observed data</p>
+</div>
+</section>
+<section id="appendix-ii-chart-types" class="slide level2" style="font-size: 80%">
+<h2>Appendix II: Chart Types</h2>
+<p><strong>Borkin Visualization Taxonomy</strong></p>
+<div style="display: flex; justify-content: center; align-items: center; height: 80%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="borkin.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="appendix-iii-visual-intent-in-the-nl-queries" class="slide level2" style="font-size: 80%">
+<h2>Appendix III: Visual Intent in the NL Queries</h2>
+<p><strong>Examples taken from NLVCorpus</strong></p>
+<p><strong>High Ambiguity:</strong> The prompt specifies only the analytical task, leaving the chart type and other specifications unspecified</p>
+<ul>
+<li><em>“Show me count of movies categorized by creative type”</em></li>
+</ul>
+<p><strong>Medium Ambiguity:</strong> The prompt specifies the analytical task and chart type, while leaving visualization details(e.g.&nbsp;encodings, layout, styling) unspecified</p>
+<ul>
+<li><em>“Line chart average weight over year”</em></li>
+</ul>
+<p><strong>Low Ambiguity:</strong> The prompt specifies the analytical task, chart type and most visualization specifications</p>
+<ul>
+<li><em>“Please show me the average accelerations of cars in multiple bar charts aggregated by the number of cylinders. In each bar chart, different bars represent different origins.”</em></li>
+</ul>
+</section>
+<section id="appendix-iv-evaluation-checkpoints" class="slide level2" style="font-size: 80%">
+<h2>Appendix IV: Evaluation Checkpoints</h2>
+<p><strong>Data Selection Stage:</strong> Verifies that the observations required for the analysis have been correctly identified and extracted from the dataset(s)</p>
+<p><strong>Data Transformation Stage:</strong> Verifies that the data has been appropriately wrangled and prepared for visualization</p>
+<p><strong>Visualization Generation Stage:</strong> Verifies that the visualization was successfully produced, either through execution of the rendering code or through the LLM’s successful generation of the visualization</p>
+<p><strong>Reading Stage:</strong> Verifies that the resulting visualization aligns with the established evaluation criteria and ground truth</p>
+</section>
+<section id="appendix-v-visualization-tradition" class="slide level2" style="font-size: 80%">
+<h2>Appendix V: Visualization Tradition</h2>
+<p><strong>InfoVis:</strong> Ideally should be attractive, grab one’s attention, tell a story, and encourage the viewer to think about a particular dataset, both as individual measurements and as a representation of larger patterns</p>
+<p><strong>Statistical Graphics:</strong> Focused not on visual appeal but on facilitating an understanding of patterns in an applied problem, both in directing readers to specific information and allowing the readers to see for themselves</p>
+<p><strong>Scientific Graphs:</strong> Scientific visualization: traditionally refers to visualizing data that is scientific in application, physically based, and has a given spatialization (i.e., the data’s spatial arrangement is inherent, like 3D medical images or wind tunnel vector data)</p>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="LMU_Logo.svg" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="presentation_260720_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="presentation_260720_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="presentation_260720_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="presentation_260720_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

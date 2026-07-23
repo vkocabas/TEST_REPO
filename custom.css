@@ -1,0 +1,9 @@
+.no-bullets li {
+  list-style: none;
+}
+.reveal .slide-logo {
+  height: 150px !important;
+  width: 150px !important;
+  max-width: unset !important;
+  max-height: unset !important;
+}
